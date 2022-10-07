@@ -5,11 +5,8 @@
 # Modified: 2022/10/05
 # Mod_auther: Miguel Brown
 
-import os
 import re
 import sys
-import random
-import string
 import argparse
 from collections import namedtuple
 import pysam
@@ -125,25 +122,6 @@ def main():
                   'Unmet',
                   'na',
                   sep="\t")
-
-        '''
-        if info['Function'] in ['splice-5', 'splice-3']:
-            pvs1 = PVS1(vcfrecord, info['Function'], info['pHGVS1'], info['MIMInheritance'], transcript)
-            splice = Splicing(vcfrecord, transcript)
-            print(vcf_id,
-                  pvs1.function,
-                  pvs1.strength_raw.name,
-                  pvs1.strength.name,
-                  splice.is_undergo_NMD,
-                  splice.has_cryptic_splice_site,
-                  splice.is_exon_skipping,
-                  splice.preserves_reading_frame,
-                  splice.is_critical_to_protein_func,
-                  splice.variant_removes_10_percent_of_protein,
-                  splice.is_critical_to_protein_func_detail,
-                  sep="\t")
-        '''
-
 
 if __name__ == '__main__':
     main()
