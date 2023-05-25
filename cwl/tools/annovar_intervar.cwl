@@ -8,7 +8,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
-    ramMin: 32000
+    ramMin: ${ return inputs.ram *1000 }
     coresMin: $(inputs.threads)
   - class: DockerRequirement
     dockerPull: 'migbro/intervar:2.2.1'
@@ -25,7 +25,8 @@ arguments:
       && perl /annovar/table_annovar.pl
 
 inputs:
-  av_input: { type: File, doc: "ANNOVAR-fomatted file input", inputBinding: { position: 1} }
+  av_input: { type: File, doc: "ANNOVAR-formatted or vcf file input. If vcf, set vcfinput to true", secondaryFiles: ['.tbi?'],
+    inputBinding: { position: 1} }
   annovar_db: { type: File, doc: "Annovar Database with at minimum required resources to InterVar", inputBinding: { position: 0 }}
   annovar_db_str: { type: string, doc: "Name of dir created when annovar db is un-tarred", inputBinding: { position: 2 }}
   buildver:  { type: ['null', { type: enum, symbols: ["hg38","hg19","hg18"], name: "buildver" } ], doc: "Genome reference build version",
@@ -46,7 +47,8 @@ inputs:
   threads: { type: 'int?', doc: "Num threads to use to process filter inputs",
     default: 8, inputBinding: { position: 2, prefix: "--thread"} }
   vcfinput: { type: 'boolean?', doc: "Annotate vcf", default: false,
-    inputBinding: {position: 2, prefix: "--vcfinput" } }  
+    inputBinding: {position: 2, prefix: "--vcfinput" } }
+  ram: { type: 'int?', doc: "Min ram required in GB", default: 32}
 outputs:
   annovar_txt: { type: File, outputBinding: { glob: '*_multianno.txt'} }
   vcf_output: { type: 'File?', outputBinding: { glob: '*.vcf'} }

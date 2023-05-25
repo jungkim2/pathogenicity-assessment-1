@@ -20,6 +20,8 @@ inputs:
   annovar_otherinfo: { type: 'boolean?', doc: "print out otherinfo (information after fifth column in queryfile)", default: true }
   annovar_threads: { type: 'int?', doc: "Num threads to use to process filter inputs", default: 8 }
   annovar_vcfinput: { type: 'boolean?', doc: "Annotate vcf and generate output file as vcf", default: false }
+  bcftools_strip_info: {type: 'string?', doc: "csv string of columns to strip if\
+      \ needed to avoid conflict/improve performance of a tool, i.e INFO/CSQ"}
   intervar_db: { type: File, doc: "InterVar Database from git repo + mim_genes.txt" }
   intervar_db_str: { type: string, doc: "Name of dir created when intervar db is un-tarred" }
 outputs:
@@ -27,16 +29,21 @@ outputs:
   annovar_vcfoutput: { type: 'File?', outputSource: run_annovar/vcf_output}
 
 steps:
-  convert_to_annovar:
-    run: ../tools/convert_to_annovar.cwl
+  bcftools_strip_info:
+    when: $(inputs.strip_info != null)
+    run: ../tools/bcftools_strip_ann.cwl
     in:
       input_vcf: input_vcf
       output_basename: output_basename
-    out: [vcf_to_avinput]
+      tool_name: tool_name
+      strip_info: bcftools_strip_columns
+    out: [stripped_vcf]
   run_annovar:
     run: ../tools/annovar_intervar.cwl
     in:
-      av_input: convert_to_annovar/vcf_to_avinput
+      av_input:
+        source: [ bcftools_strip_info/stripped_vcf, input_vcf ]
+        pickValue: first_non_null
       annovar_db: annovar_db
       annovar_db_str: annovar_db_str
       buildver: buildver
