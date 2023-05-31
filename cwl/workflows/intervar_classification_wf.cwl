@@ -26,7 +26,7 @@ inputs:
   intervar_db_str: { type: string, doc: "Name of dir created when intervar db is un-tarred" }
 outputs:
   intervar_classification: { type: File, outputSource: intervar_classify/intervar_scored}
-  annovar_vcfoutput: { type: 'File?', outputSource: run_annovar/vcf_output}
+  annovar_vcfoutput: { type: 'File?', outputSource: sort_gzip_index_vcf/gzipped_vcf}
 
 steps:
   bcftools_strip_info:
@@ -38,6 +38,7 @@ steps:
       tool_name: tool_name
       strip_info: bcftools_strip_columns
     out: [stripped_vcf]
+ 
   run_annovar:
     run: ../tools/annovar_intervar.cwl
     in:
@@ -55,6 +56,7 @@ steps:
       threads: annovar_threads
       vcfinput: annovar_vcfinput
     out: [annovar_txt, vcf_output]
+ 
   intervar_classify:
     run: ../tools/intervar.cwl
     in:
@@ -68,6 +70,17 @@ steps:
       skip_annovar:
         valueFrom: "${return true;}"
     out: [intervar_scored]
+ 
+  sort_gzip_index_vcf:
+    run: ../tools/sort_gzip_index_vcf.cwl
+    in: run_annovar/vcf_output
+    out: [gzipped_vcf]
+
+$namespaces:
+  sbg: https://sevenbridges.com
+hints:
+- class: sbg:maxNumberOfParallelInstances
+  value: 2
 
 
 

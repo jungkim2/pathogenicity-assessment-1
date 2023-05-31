@@ -8,7 +8,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
-    ramMin: 16000
+    ramMin: ${ return inputs.intervar_ram * 1000 }
     coresMin: 8
   - class: DockerRequirement
     dockerPull: 'migbro/intervar:2.2.1'
@@ -49,6 +49,7 @@ inputs:
   intervar_db_str: { type: string, doc: "Name of dir created when intervar db is un-tarred", inputBinding: { position: 2, prefix: "-t"}}
   output_basename: { type: string, doc: "String that will be used in the output filenames. Be sure to be consistent if a previous run of ANNOVAR was used",
     inputBinding: {position: 2, prefix: "-o" } }
+  intervar_ram: { type: 'int?', doc: "Min ram needed for task in GB", default: 32}
 
 outputs:
    intervar_scored: { type: File, outputBinding: {glob: "*_multianno.txt.intervar"}}

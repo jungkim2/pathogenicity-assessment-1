@@ -28,7 +28,7 @@ inputs:
     input_vcf: {type: File, secondaryFiles: ['.tbi']}
     output_basename: string
     tool_name: string
-    strip_info: {type: ['null', string], doc: "If given, remove previous annotation information based on INFO file, i.e. to strip VEP info, use INFO/ANN"}
+    strip_info: {type: ['null', string], doc: "If given, remove previous annotation information based on INFO file, i.e. to strip VEP info, use INFO/CSQ. Give as csv string for multiple"}
 
 outputs:
   stripped_vcf:
