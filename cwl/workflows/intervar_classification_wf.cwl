@@ -19,15 +19,16 @@ inputs:
   annovar_nastring: { type: 'string?', doc: "character used to represent missing values", default: '.' }
   annovar_otherinfo: { type: 'boolean?', doc: "print out otherinfo (information after fifth column in queryfile)", default: true }
   annovar_threads: { type: 'int?', doc: "Num threads to use to process filter inputs", default: 8 }
+  annovar_ram: { type: 'int?', doc: "Memory to run tool. Sometimes need more", default: 32}
   annovar_vcfinput: { type: 'boolean?', doc: "Annotate vcf and generate output file as vcf", default: false }
   bcftools_strip_info: {type: 'string?', doc: "csv string of columns to strip if\
       \ needed to avoid conflict/improve performance of a tool, i.e INFO/CSQ"}
   intervar_db: { type: File, doc: "InterVar Database from git repo + mim_genes.txt" }
   intervar_db_str: { type: string, doc: "Name of dir created when intervar db is un-tarred" }
-  intervar_ram: { type: 'int?', doc: "Min ram needed for task in GB", default: 16}
+  intervar_ram: { type: 'int?', doc: "Min ram needed for task in GB", default: 32 }
 outputs:
-  intervar_classification: { type: File, outputSource: intervar_classify/intervar_scored}
-  annovar_vcfoutput: { type: 'File?', outputSource: sort_gzip_index_vcf/gzipped_vcf}
+  intervar_classification: { type: File, outputSource: intervar_classify/intervar_scored }
+  annovar_vcfoutput: { type: 'File?', outputSource: sort_gzip_index_vcf/gzipped_vcf }
 
 steps:
   bcftools_strip_info:
@@ -55,6 +56,7 @@ steps:
       nastring: annovar_nastring
       otherinfo: annovar_otherinfo
       threads: annovar_threads
+      ram: annovar_ram
       vcfinput: annovar_vcfinput
     out: [annovar_txt, vcf_output]
  

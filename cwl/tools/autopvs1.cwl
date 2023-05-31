@@ -11,7 +11,7 @@ requirements:
     ramMin: 16000
     coresMin: 8
   - class: DockerRequirement
-    dockerPull: 'migbro/autopvs1:v0.2.0a'
+    dockerPull: 'pgc-images.sbgenomics.com/brownm28/autopvs1:v0.2.0a'
 
 baseCommand: []
 arguments:
