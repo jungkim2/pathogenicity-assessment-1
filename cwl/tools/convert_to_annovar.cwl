@@ -11,7 +11,7 @@ requirements:
     ramMin: 4000
     coresMin: 8
   - class: DockerRequirement
-    dockerPull: 'migbro/intervar:2.2.1'
+    dockerPull: 'pgc-images.sbgenomics.com/brownm28/intervar:2.2.1'
 
 baseCommand: [perl]
 arguments:

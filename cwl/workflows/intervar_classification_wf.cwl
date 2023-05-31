@@ -24,6 +24,7 @@ inputs:
       \ needed to avoid conflict/improve performance of a tool, i.e INFO/CSQ"}
   intervar_db: { type: File, doc: "InterVar Database from git repo + mim_genes.txt" }
   intervar_db_str: { type: string, doc: "Name of dir created when intervar db is un-tarred" }
+  intervar_ram: { type: 'int?', doc: "Min ram needed for task in GB", default: 16}
 outputs:
   intervar_classification: { type: File, outputSource: intervar_classify/intervar_scored}
   annovar_vcfoutput: { type: 'File?', outputSource: sort_gzip_index_vcf/gzipped_vcf}
@@ -69,6 +70,7 @@ steps:
       intervar_db_str: intervar_db_str
       skip_annovar:
         valueFrom: "${return true;}"
+      intervar_ram: intervar_ram
     out: [intervar_scored]
  
   sort_gzip_index_vcf:

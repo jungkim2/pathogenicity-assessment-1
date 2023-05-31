@@ -28,6 +28,7 @@ inputs:
       \ needed to avoid conflict/improve performance of a tool, i.e INFO/CSQ"}
   intervar_db: { type: File, doc: "InterVar Database from git repo + mim_genes.txt" }
   intervar_db_str: { type: 'string?', doc: "Name of dir created when intervar db is un-tarred", default: "intervardb" }
+  intervar_ram: { type: 'int?', doc: "Min ram needed for task in GB", default: 16 }
   # autoPVS1
   autopvs1_db: { type: File, doc: "git repo files plus a user-provided fasta reference"}
   autopvs1_db_str: { type: 'string?', doc: "Name of dir created when annovar db is un-tarred", default: "data"}
@@ -54,6 +55,7 @@ steps:
         bcftools_strip_info: bcftools_strip_info
         intervar_db: intervar_db
         intervar_db_str: intervar_db_str
+        intervar_ram: intervar_ram
     out: [intervar_classification, annovar_vcfoutput]
 
   run_autopvs1:
