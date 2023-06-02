@@ -29,6 +29,7 @@ inputs:
 outputs:
   intervar_classification: { type: File, outputSource: intervar_classify/intervar_scored }
   annovar_vcfoutput: { type: 'File?', outputSource: sort_gzip_index_vcf/gzipped_vcf }
+  annovar_txt: { type: File, outputSource: run_annovar/annovar_txt }
 
 steps:
   bcftools_strip_info:
@@ -37,8 +38,7 @@ steps:
     in:
       input_vcf: input_vcf
       output_basename: output_basename
-      tool_name: tool_name
-      strip_info: bcftools_strip_columns
+      strip_info: bcftools_strip_info
     out: [stripped_vcf]
  
   run_annovar:
@@ -76,8 +76,10 @@ steps:
     out: [intervar_scored]
  
   sort_gzip_index_vcf:
+    when: $(inputs.input_vcf != null)
     run: ../tools/sort_gzip_index_vcf.cwl
-    in: run_annovar/vcf_output
+    in:
+      input_vcf: run_annovar/vcf_output
     out: [gzipped_vcf]
 
 $namespaces:

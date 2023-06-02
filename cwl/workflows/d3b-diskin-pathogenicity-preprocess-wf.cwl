@@ -38,6 +38,7 @@ outputs:
   intervar_classification: { type: File, outputSource: run_intervar/intervar_classification}
   autopvs1_tsv: { type: File, outputSource: run_autopvs1/autopvs1_tsv }
   annovar_vcfoutput: { type: 'File?', outputSource: run_intervar/annovar_vcfoutput}
+  annovar_txt: { type: File, outputSource: run_intervar/annovar_txt }
 steps:
   run_intervar:
     run: intervar_classification_wf.cwl
@@ -58,7 +59,7 @@ steps:
         intervar_db: intervar_db
         intervar_db_str: intervar_db_str
         intervar_ram: intervar_ram
-    out: [intervar_classification, annovar_vcfoutput]
+    out: [intervar_classification, annovar_vcfoutput, annovar_txt]
 
   run_autopvs1:
     run: ../tools/autopvs1.cwl
